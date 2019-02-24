@@ -139,7 +139,7 @@ public class DanmuController {
 
     public void setDanmuAlpha(float p) {
 
-        CustomEmojDanmuSpan.alpha = (int) (p * 255);
+        CustomDanmuSpan.alpha = (int) (p * 255);
         if (mDanmuContext != null) {
             mDanmuContext.setDanmakuTransparency(p);
         }

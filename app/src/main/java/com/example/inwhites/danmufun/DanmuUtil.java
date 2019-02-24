@@ -17,7 +17,7 @@ public class DanmuUtil {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resId);
         if (bitmap != null) {
             Bitmap scaleBitmap = Bitmap.createScaledBitmap(bitmap, ScreenUtils.sp2Px(20), ScreenUtils.sp2Px(20), true);
-            CustomEmojDanmuSpan span = new CustomEmojDanmuSpan(context, scaleBitmap);
+            CustomDanmuSpan span = new CustomDanmuSpan(context, scaleBitmap);
             spannableStringBuilder.setSpan(span, spannableStringBuilder.length() - 1, spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
