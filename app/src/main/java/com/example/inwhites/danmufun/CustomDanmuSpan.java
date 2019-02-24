@@ -16,8 +16,8 @@ public class CustomDanmuSpan extends DynamicDrawableSpan {
     public static int alpha = 255;
     private Drawable mDrawable;
     private Context mContext;
-    float textSize;
     float fontSize;
+    float defaultSize; //初始化时字体大小
 
 
     public CustomDanmuSpan(Context context, Bitmap b) {
@@ -26,8 +26,8 @@ public class CustomDanmuSpan extends DynamicDrawableSpan {
 
     public CustomDanmuSpan(Context context, Bitmap b, int verticalAlignment) {
         super(verticalAlignment);
-        this.textSize = 36;
-        this.fontSize = this.textSize;
+        this.fontSize = ScreenUtils.sp2Px(16);
+        this.defaultSize = fontSize;
         this.mContext = context;
         this.mDrawable = context != null ? new BitmapDrawable(context.getResources(), b) : new BitmapDrawable(b);
         int width = this.mDrawable.getIntrinsicWidth();
@@ -39,10 +39,10 @@ public class CustomDanmuSpan extends DynamicDrawableSpan {
     public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, @NonNull Paint paint) {
         Drawable drawable = this.getDrawable();
         Paint.FontMetricsInt fm = paint.getFontMetricsInt();
-        int transY = (y + fm.descent + y + fm.ascent) / 2 - drawable.getBounds().bottom / 2;
+        int transY = (y + fm.descent + y + fm.ascent) / 2 - drawable.getBounds().bottom / 2;//让图片与文字对齐
         canvas.save();
         canvas.translate(x, (float) transY);
-        drawable.setAlpha(alpha);
+        drawable.setAlpha(alpha);//设置表情透明度
         drawable.draw(canvas);
         canvas.restore();
     }
@@ -52,13 +52,15 @@ public class CustomDanmuSpan extends DynamicDrawableSpan {
         Drawable drawable = this.getDrawable();
         int fontHeight;
         if (paint.getTextSize() != this.fontSize) {
-            this.fontSize = paint.getTextSize();
-            float scaleSize = this.fontSize / this.textSize;
+            this.fontSize = paint.getTextSize(); //得到当前弹幕字体大小
+            float scaleSize = this.fontSize / this.defaultSize;//计算缩放大小
             int width = (int) ((float) this.mDrawable.getIntrinsicWidth() * scaleSize);
             fontHeight = (int) ((float) this.mDrawable.getIntrinsicHeight() * scaleSize);
-            this.mDrawable.setBounds(0, 0, width, fontHeight);
+            this.mDrawable.setBounds(0, 0, width, fontHeight);//设置表情缩放后的大小
         }
 
+
+        //保证图片与文字居中对齐
         Rect rect = drawable.getBounds();
         if (fontMetricsInt != null) {
             Paint.FontMetricsInt fmPaint = paint.getFontMetricsInt();
