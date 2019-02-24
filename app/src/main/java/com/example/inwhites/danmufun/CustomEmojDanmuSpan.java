@@ -10,13 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.text.style.DynamicDrawableSpan;
 
-/**
- * Alias: inwhites
- * <p>
- * Date: 2019/1/6
- * <p>
- * Description:
- */
+
 public class CustomEmojDanmuSpan extends DynamicDrawableSpan {
 
     public static int alpha = 255;
@@ -25,13 +19,6 @@ public class CustomEmojDanmuSpan extends DynamicDrawableSpan {
     float textSize;
     float currentSize;
 
-    public CustomEmojDanmuSpan(Bitmap b) {
-        this((Context)null, b, 0);
-    }
-
-    public CustomEmojDanmuSpan(Bitmap b, int verticalAlignment) {
-        this((Context)null, b, verticalAlignment);
-    }
 
     public CustomEmojDanmuSpan(Context context, Bitmap b) {
         this(context, b, 0);
@@ -48,25 +35,27 @@ public class CustomEmojDanmuSpan extends DynamicDrawableSpan {
         this.mDrawable.setBounds(0, 0, width > 0 ? width : 0, height > 0 ? height : 0);
     }
 
+    @Override
     public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, @NonNull Paint paint) {
         Drawable b = this.getDrawable();
         b.setAlpha(alpha);
         Paint.FontMetricsInt fm = paint.getFontMetricsInt();
         int transY = (y + fm.descent + y + fm.ascent) / 2 - b.getBounds().bottom / 2;
         canvas.save();
-        canvas.translate(x, (float)transY);
+        canvas.translate(x, (float) transY);
         b.draw(canvas);
         canvas.restore();
     }
 
+    @Override
     public int getSize(Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fontMetricsInt) {
         Drawable drawable = this.getDrawable();
         int fontHeight;
         if (paint.getTextSize() != this.currentSize) {
             this.currentSize = paint.getTextSize();
             float scale = this.currentSize / this.textSize;
-            int width = (int)((float)this.mDrawable.getIntrinsicWidth() * scale);
-            fontHeight = (int)((float)this.mDrawable.getIntrinsicHeight() * scale);
+            int width = (int) ((float) this.mDrawable.getIntrinsicWidth() * scale);
+            fontHeight = (int) ((float) this.mDrawable.getIntrinsicHeight() * scale);
             this.mDrawable.setBounds(0, 0, width, fontHeight);
         }
 
@@ -86,6 +75,7 @@ public class CustomEmojDanmuSpan extends DynamicDrawableSpan {
         return rect.right;
     }
 
+    @Override
     public Drawable getDrawable() {
         Drawable drawable = null;
         if (this.mDrawable != null) {

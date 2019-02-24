@@ -3,9 +3,7 @@ package com.example.inwhites.danmufun;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.io.InputStream;
 
@@ -20,7 +18,7 @@ import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.ui.widget.DanmakuView;
 
 
-public class DanmuProvider {
+public class DanmuController {
     private DanmakuView mDanmukuView;
     private DanmakuContext mDanmuContext;
     private BaseDanmakuParser mParser;
@@ -28,13 +26,15 @@ public class DanmuProvider {
     private DrawHandler.Callback mCallback;
 
 
-    public DanmuProvider(Context context) {
+    public DanmuController(Context context) {
         this.mContext = context;
 
 
     }
 
-
+    /**
+     * @return
+     */
     public View getDanmuView() {
         if (mDanmukuView == null) {
             mDanmukuView = new DanmakuView(mContext);
@@ -50,7 +50,7 @@ public class DanmuProvider {
         mDanmuContext.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_SHADOW, 2)
                 .setDuplicateMergingEnabled(false)
                 .setSpecialDanmakuVisibility(false)
-                .setDanmakuMargin(100)
+                .setDanmakuMargin(10)
                 .setCacheStuffer(new SpannedCacheStuffer(), null);
 
         mParser = createParser(null);
@@ -62,11 +62,6 @@ public class DanmuProvider {
     }
 
 
-    /**
-     * 普通弹幕
-     *
-     * @param string
-     */
     public void addDanmaku(SpannableStringBuilder string) {
 
 
@@ -74,7 +69,7 @@ public class DanmuProvider {
         if (danmaku == null) {
             return;
         }
-        danmaku.textSize = ScreenUtils.sp2Px(20);
+        danmaku.textSize = ScreenUtils.sp2Px(16);
         danmaku.isLive = true;
         danmaku.setTime(mDanmukuView.getCurrentTime() + 1200);
         danmaku.padding = ScreenUtils.dip2Px(4);
@@ -96,8 +91,6 @@ public class DanmuProvider {
         mDanmukuView.clearDanmakusOnScreen();
         mDanmukuView.removeAllLiveDanmakus();
         mDanmukuView.hideAndPauseDrawTask();
-
-
     }
 
     public static BaseDanmakuParser createParser(InputStream stream) {
@@ -151,8 +144,15 @@ public class DanmuProvider {
             mDanmuContext.setDanmakuTransparency(p);
         }
 
-
     }
 
+
+    public void setDanmuSize(float p) {
+
+        if (mDanmuContext != null) {
+            mDanmuContext.setScaleTextSize((float) (1.0 * p / 16));
+
+        }
+    }
 
 }
