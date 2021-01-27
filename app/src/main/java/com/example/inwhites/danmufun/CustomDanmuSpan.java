@@ -86,7 +86,6 @@ public class CustomDanmuSpan extends DynamicDrawableSpan {
             this.mDrawable = new BitmapDrawable();
         }
 
-
         return drawable;
     }
 
