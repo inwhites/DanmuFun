@@ -5,6 +5,7 @@ buildscript {
     //add dev
     //add1git
     //add2
+    //add3git
     
     repositories {
         google()
