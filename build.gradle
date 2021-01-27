@@ -8,6 +8,7 @@ buildscript {
     //add3git
     //add4
     //add 5
+    //add6
     repositories {
         google()
         jcenter()
